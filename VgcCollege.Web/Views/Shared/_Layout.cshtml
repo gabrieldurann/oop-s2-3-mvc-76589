@@ -26,6 +26,47 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown">
+                                Admin
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-controller="AdminBranches" asp-action="Index">Branches</a></li>
+                                <li><a class="dropdown-item" asp-controller="AdminCourses" asp-action="Index">Courses</a></li>
+                                <li><a class="dropdown-item" asp-controller="AdminFaculty" asp-action="Index">Faculty</a></li>
+                                <li><a class="dropdown-item" asp-controller="AdminEnrolments" asp-action="Index">Enrolments</a></li>
+                                <li><a class="dropdown-item" asp-controller="AdminExams" asp-action="Index">Exams</a></li>
+                            </ul>
+                        </li>
+                    }
+                    @if (User.IsInRole("Faculty"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown">
+                                Faculty
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-controller="FacultyDashboard" asp-action="Index">Dashboard</a></li>
+                                <li><a class="dropdown-item" asp-controller="FacultyGradebook" asp-action="Index">Gradebook</a></li>
+                                <li><a class="dropdown-item" asp-controller="FacultyAttendance" asp-action="Index">Attendance</a></li>
+                            </ul>
+                        </li>
+                    }
+                    @if (User.IsInRole("Student"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown">
+                                My College
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-controller="StudentDashboard" asp-action="Index">Dashboard</a></li>
+                                <li><a class="dropdown-item" asp-controller="StudentGrades" asp-action="Index">My Grades</a></li>
+                                <li><a class="dropdown-item" asp-controller="StudentAttendance" asp-action="Index">My Attendance</a></li>
+                            </ul>
+                        </li>
+                    }
                 </ul>
                 <partial name="_LoginPartial"/>
             </div>

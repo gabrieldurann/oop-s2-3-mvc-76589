@@ -1,0 +1,35 @@
+@model IEnumerable<VgcCollege.Web.Models.Course>
+@{
+    ViewData["Title"] = "Courses";
+}
+
+<h2>Courses</h2>
+<p><a asp-action="Create" class="btn btn-primary">Add Course</a></p>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Branch</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var course in Model)
+    {
+        <tr>
+            <td>@course.Name</td>
+            <td>@course.Branch.Name</td>
+            <td>@course.StartDate.ToString("dd/MM/yyyy")</td>
+            <td>@course.EndDate.ToString("dd/MM/yyyy")</td>
+            <td>
+                <a asp-action="Details" asp-route-id="@course.Id" class="btn btn-sm btn-info">Details</a>
+                <a asp-action="Edit" asp-route-id="@course.Id" class="btn btn-sm btn-warning">Edit</a>
+                <a asp-action="Delete" asp-route-id="@course.Id" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
