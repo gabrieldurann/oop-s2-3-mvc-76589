@@ -1,0 +1,33 @@
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    var assignment = (VgcCollege.Web.Models.Assignment)ViewBag.Assignment;
+    ViewData["Title"] = "Enter Result — " + assignment.Title;
+}
+
+<h2>Enter Result</h2>
+<p><strong>Assignment:</strong> @assignment.Title | <strong>Course:</strong> @assignment.Course.Name | <strong>Max Score:</strong> @assignment.MaxScore</p>
+
+<form asp-action="EnterResult" asp-route-id="@assignment.Id" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="mb-3">
+        <label class="form-label">Student</label>
+        <select name="studentProfileId" class="form-select">
+            <option value="">-- Select Student --</option>
+            @foreach (SelectListItem item in ViewBag.Students)
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Score (0 — @assignment.MaxScore)</label>
+        <input name="score" type="number" min="0" max="@assignment.MaxScore" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Feedback</label>
+        <textarea name="feedback" class="form-control" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Save Result</button>
+    <a asp-action="Course" asp-route-id="@assignment.CourseId" class="btn btn-secondary">Cancel</a>
+</form>

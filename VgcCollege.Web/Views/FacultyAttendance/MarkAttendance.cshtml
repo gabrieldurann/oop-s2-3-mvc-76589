@@ -1,0 +1,49 @@
+@model IEnumerable<VgcCollege.Web.Models.CourseEnrolment>
+@{
+    var course = (VgcCollege.Web.Models.Course)ViewBag.Course;
+    var today = (DateTime)ViewBag.Today;
+    ViewData["Title"] = "Mark Attendance — " + course.Name;
+}
+
+<h2>Mark Attendance — @course.Name</h2>
+
+<form asp-action="MarkAttendance" asp-route-id="@course.Id" method="post">
+    @Html.AntiForgeryToken()
+    <div class="mb-3">
+        <label class="form-label">Date</label>
+        <input name="date" type="date" class="form-control" value="@today.ToString("yyyy-MM-dd")" style="max-width: 250px;" />
+    </div>
+
+    @if (Model.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Student</th>
+                <th>Student Number</th>
+                <th>Present</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var e in Model)
+            {
+                <tr>
+                    <td>@e.StudentProfile.Name</td>
+                    <td>@e.StudentProfile.StudentNumber</td>
+                    <td>
+                        <input type="hidden" name="attendance[@e.Id]" value="false" />
+                        <input type="checkbox" name="attendance[@e.Id]" value="true" checked class="form-check-input" />
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Save Attendance</button>
+    }
+    else
+    {
+        <p class="text-muted">No active students to mark.</p>
+    }
+</form>
+
+<a asp-action="Course" asp-route-id="@course.Id" class="btn btn-secondary mt-2">Cancel</a>
