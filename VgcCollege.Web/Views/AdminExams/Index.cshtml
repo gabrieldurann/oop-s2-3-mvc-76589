@@ -1,0 +1,44 @@
+@model IEnumerable<VgcCollege.Web.Models.Exam>
+@{
+    ViewData["Title"] = "Exams";
+}
+
+<h2>Exams</h2>
+<p><a asp-action="Create" class="btn btn-primary">Add Exam</a></p>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Course</th>
+        <th>Date</th>
+        <th>Max Score</th>
+        <th>Results Released</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var exam in Model)
+    {
+        <tr>
+            <td>@exam.Title</td>
+            <td>@exam.Course.Name</td>
+            <td>@exam.Date.ToString("dd/MM/yyyy")</td>
+            <td>@exam.MaxScore</td>
+            <td>
+                <form asp-action="ToggleRelease" asp-route-id="@exam.Id" method="post" style="display:inline;">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-sm @(exam.ResultsReleased ? "btn-success" : "btn-outline-secondary")">
+                        @(exam.ResultsReleased ? "Released ✓" : "Provisional")
+                    </button>
+                </form>
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@exam.Id" class="btn btn-sm btn-info">Details</a>
+                <a asp-action="Edit" asp-route-id="@exam.Id" class="btn btn-sm btn-warning">Edit</a>
+                <a asp-action="Delete" asp-route-id="@exam.Id" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

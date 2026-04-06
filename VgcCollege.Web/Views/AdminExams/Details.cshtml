@@ -1,0 +1,74 @@
+@model VgcCollege.Web.Models.Exam
+@using VgcCollege.Web.Models
+@{
+    ViewData["Title"] = "Exam Details";
+    var results = (List<ExamResult>)ViewBag.Results;
+}
+
+<h2>Exam Details</h2>
+
+<dl class="row">
+    <dt class="col-sm-3">Title</dt>
+    <dd class="col-sm-9">@Model.Title</dd>
+    <dt class="col-sm-3">Course</dt>
+    <dd class="col-sm-9">@Model.Course.Name</dd>
+    <dt class="col-sm-3">Branch</dt>
+    <dd class="col-sm-9">@Model.Course.Branch.Name</dd>
+    <dt class="col-sm-3">Date</dt>
+    <dd class="col-sm-9">@Model.Date.ToString("dd/MM/yyyy")</dd>
+    <dt class="col-sm-3">Max Score</dt>
+    <dd class="col-sm-9">@Model.MaxScore</dd>
+    <dt class="col-sm-3">Results Status</dt>
+    <dd class="col-sm-9">
+        @if (Model.ResultsReleased)
+        {
+            <span class="badge bg-success">Released</span>
+        }
+        else
+        {
+            <span class="badge bg-warning">Provisional</span>
+        }
+    </dd>
+</dl>
+
+<h4>Student Results</h4>
+@if (results.Any())
+{
+    var avgScore = results.Average(r => (double)r.Score);
+    var highScore = results.Max(r => r.Score);
+    var lowScore = results.Min(r => r.Score);
+    <p>
+        <strong>Average:</strong> @avgScore.ToString("F1") |
+        <strong>Highest:</strong> @highScore |
+        <strong>Lowest:</strong> @lowScore |
+        <strong>Students:</strong> @results.Count
+    </p>
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Student Number</th>
+                <th>Score</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in results)
+            {
+                <tr>
+                    <td>@r.StudentProfile.Name</td>
+                    <td>@r.StudentProfile.StudentNumber</td>
+                    <td>@r.Score / @Model.MaxScore</td>
+                    <td>@(r.Grade ?? "—")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted">No results recorded yet.</p>
+}
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>

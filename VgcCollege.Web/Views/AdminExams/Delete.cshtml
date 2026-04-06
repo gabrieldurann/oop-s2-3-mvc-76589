@@ -1,0 +1,25 @@
+@model VgcCollege.Web.Models.Exam
+@{
+    ViewData["Title"] = "Delete Exam";
+}
+
+<h2>Delete Exam</h2>
+
+<div class="alert alert-danger">
+    Are you sure you want to delete exam <strong>@Model.Title</strong>?
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Title</dt>
+    <dd class="col-sm-9">@Model.Title</dd>
+    <dt class="col-sm-3">Course</dt>
+    <dd class="col-sm-9">@Model.Course.Name</dd>
+    <dt class="col-sm-3">Date</dt>
+    <dd class="col-sm-9">@Model.Date.ToString("dd/MM/yyyy")</dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

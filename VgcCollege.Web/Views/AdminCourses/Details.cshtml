@@ -1,0 +1,65 @@
+@model VgcCollege.Web.Models.Course
+@{
+    ViewData["Title"] = "Course Details";
+}
+
+<h2>Course Details</h2>
+
+<dl class="row">
+    <dt class="col-sm-3">Name</dt>
+    <dd class="col-sm-9">@Model.Name</dd>
+    <dt class="col-sm-3">Branch</dt>
+    <dd class="col-sm-9">@Model.Branch.Name</dd>
+    <dt class="col-sm-3">Start Date</dt>
+    <dd class="col-sm-9">@Model.StartDate.ToString("dd/MM/yyyy")</dd>
+    <dt class="col-sm-3">End Date</dt>
+    <dd class="col-sm-9">@Model.EndDate.ToString("dd/MM/yyyy")</dd>
+</dl>
+
+<h4>Assigned Faculty</h4>
+@if (Model.FacultyAssignments.Any())
+{
+    <ul>
+        @foreach (var fa in Model.FacultyAssignments)
+        {
+            <li>@fa.FacultyProfile.Name (@fa.FacultyProfile.Email)</li>
+        }
+    </ul>
+}
+else
+{
+    <p class="text-muted">No faculty assigned yet.</p>
+}
+
+<h4>Enrolled Students</h4>
+@if (Model.Enrolments.Any())
+{
+    <table class="table table-sm">
+        <thead>
+        <tr>
+            <th>Student</th>
+            <th>Student Number</th>
+            <th>Enrol Date</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var e in Model.Enrolments)
+        {
+            <tr>
+                <td>@e.StudentProfile.Name</td>
+                <td>@e.StudentProfile.StudentNumber</td>
+                <td>@e.EnrolDate.ToString("dd/MM/yyyy")</td>
+                <td>@e.Status</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted">No students enrolled yet.</p>
+}
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>

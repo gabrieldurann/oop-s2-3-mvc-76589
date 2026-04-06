@@ -1,0 +1,45 @@
+@model IEnumerable<VgcCollege.Web.Models.FacultyProfile>
+@{
+    ViewData["Title"] = "Faculty";
+}
+
+<h2>Faculty</h2>
+<p><a asp-action="Create" class="btn btn-primary">Add Faculty</a></p>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Assigned Courses</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var f in Model)
+    {
+        <tr>
+            <td>@f.Name</td>
+            <td>@f.Email</td>
+            <td>@f.Phone</td>
+            <td>
+                @if (f.CourseAssignments.Any())
+                {
+                    @string.Join(", ", f.CourseAssignments.Select(ca => ca.Course.Name))
+                }
+                else
+                {
+                    <span class="text-muted">None</span>
+                }
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@f.Id" class="btn btn-sm btn-info">Details</a>
+                <a asp-action="Edit" asp-route-id="@f.Id" class="btn btn-sm btn-warning">Edit</a>
+                <a asp-action="AssignCourse" asp-route-id="@f.Id" class="btn btn-sm btn-success">Assign Course</a>
+                <a asp-action="Delete" asp-route-id="@f.Id" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

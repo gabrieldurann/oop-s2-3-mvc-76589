@@ -1,0 +1,49 @@
+@model VgcCollege.Web.Models.FacultyProfile
+@{
+    ViewData["Title"] = "Faculty Details";
+}
+
+<h2>@Model.Name</h2>
+
+<dl class="row">
+    <dt class="col-sm-3">Email</dt>
+    <dd class="col-sm-9">@Model.Email</dd>
+    <dt class="col-sm-3">Phone</dt>
+    <dd class="col-sm-9">@Model.Phone</dd>
+</dl>
+
+<h4>Assigned Courses</h4>
+@if (Model.CourseAssignments.Any())
+{
+    <table class="table table-sm">
+        <thead>
+        <tr>
+            <th>Course</th>
+            <th>Branch</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var ca in Model.CourseAssignments)
+        {
+            <tr>
+                <td>@ca.Course.Name</td>
+                <td>@ca.Course.Branch.Name</td>
+                <td>
+                    <form asp-action="RemoveCourseAssignment" asp-route-id="@Model.Id" asp-route-assignmentId="@ca.Id" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Remove this assignment?')">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted">No courses assigned.</p>
+}
+
+<a asp-action="AssignCourse" asp-route-id="@Model.Id" class="btn btn-success">Assign Course</a>
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>

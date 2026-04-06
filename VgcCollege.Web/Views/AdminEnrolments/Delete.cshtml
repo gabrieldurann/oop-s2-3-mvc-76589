@@ -1,0 +1,16 @@
+@model VgcCollege.Web.Models.CourseEnrolment
+@{
+    ViewData["Title"] = "Delete Enrolment";
+}
+
+<h2>Delete Enrolment</h2>
+
+<div class="alert alert-danger">
+    Are you sure you want to remove <strong>@Model.StudentProfile.Name</strong> from <strong>@Model.Course.Name</strong>?
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
