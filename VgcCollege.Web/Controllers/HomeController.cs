@@ -1,6 +1,4 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using VgcCollege.Web.Models;
 
 namespace VgcCollege.Web.Controllers;
 
@@ -8,6 +6,13 @@ public class HomeController : Controller
 {
     public IActionResult Index()
     {
+        if (User.IsInRole("Admin"))
+            return RedirectToAction("Index", "AdminBranches");
+        if (User.IsInRole("Faculty"))
+            return RedirectToAction("Index", "FacultyDashboard");
+        if (User.IsInRole("Student"))
+            return RedirectToAction("Index", "StudentDashboard");
+
         return View();
     }
 
@@ -16,9 +21,24 @@ public class HomeController : Controller
         return View();
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    public IActionResult AccessDenied()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View("~/Views/Shared/AccessDenied.cshtml");
+    }
+
+    [Route("Home/Error/{statusCode}")]
+    public IActionResult HttpStatusCodeHandler(int statusCode)
+    {
+        if (statusCode == 404)
+        {
+            ViewData["Title"] = "Page Not Found";
+            ViewData["Message"] = "The page you're looking for doesn't exist.";
+        }
+        else
+        {
+            ViewData["Title"] = "Error";
+            ViewData["Message"] = "An unexpected error occurred.";
+        }
+        return View("StatusCode");
     }
 }
