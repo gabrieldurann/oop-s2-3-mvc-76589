@@ -1,0 +1,33 @@
+@model VgcCollege.Web.Models.FacultyProfile
+@{
+    ViewData["Title"] = "Delete Faculty";
+}
+
+<h2>Delete Faculty</h2>
+
+<div class="alert alert-danger">
+    Are you sure you want to delete <strong>@Model.Name</strong>?
+    @if (Model.CourseAssignments.Any())
+    {
+        var courseNames = string.Join(", ", Model.CourseAssignments.Select(ca => ca.Course.Name));
+        <br/>
+        <text>This faculty member is currently assigned to: @courseNames</text>
+        <br/>
+        <text>These course assignments will be removed, but the courses and their grades will be kept.</text>
+    }
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Name</dt>
+    <dd class="col-sm-9">@Model.Name</dd>
+    <dt class="col-sm-3">Email</dt>
+    <dd class="col-sm-9">@Model.Email</dd>
+    <dt class="col-sm-3">Phone</dt>
+    <dd class="col-sm-9">@Model.Phone</dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

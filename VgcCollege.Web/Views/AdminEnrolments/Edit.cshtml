@@ -1,0 +1,29 @@
+@model VgcCollege.Web.Models.CourseEnrolment
+@{
+    ViewData["Title"] = "Edit Enrolment";
+}
+
+<h2>Edit Enrolment</h2>
+
+<dl class="row">
+    <dt class="col-sm-3">Student</dt>
+    <dd class="col-sm-9">@Model.StudentProfile.Name</dd>
+    <dt class="col-sm-3">Course</dt>
+    <dd class="col-sm-9">@Model.Course.Name</dd>
+    <dt class="col-sm-3">Enrol Date</dt>
+    <dd class="col-sm-9">@Model.EnrolDate.ToString("dd/MM/yyyy")</dd>
+</dl>
+
+<form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+    @Html.AntiForgeryToken()
+    <div class="mb-3">
+        <label class="form-label">Status</label>
+        <select name="status" class="form-select">
+            <option value="Active" selected="@(Model.Status == "Active")">Active</option>
+            <option value="Completed" selected="@(Model.Status == "Completed")">Completed</option>
+            <option value="Withdrawn" selected="@(Model.Status == "Withdrawn")">Withdrawn</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

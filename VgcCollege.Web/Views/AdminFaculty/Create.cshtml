@@ -1,0 +1,32 @@
+@model VgcCollege.Web.Models.FacultyProfile
+@{
+    ViewData["Title"] = "Add Faculty";
+}
+
+<h2>Add Faculty</h2>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Phone" class="form-label"></label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="IdentityUserId" class="form-label">Identity User ID</label>
+        <input asp-for="IdentityUserId" class="form-control" placeholder="Leave blank if no login account" />
+        <span asp-validation-for="IdentityUserId" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
