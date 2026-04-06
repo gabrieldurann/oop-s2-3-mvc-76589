@@ -1,0 +1,41 @@
+@model IEnumerable<VgcCollege.Web.Models.CourseEnrolment>
+@{
+    var student = (VgcCollege.Web.Models.StudentProfile)ViewBag.Student;
+    ViewData["Title"] = "Student Dashboard";
+}
+
+<h2>Welcome, @student.Name</h2>
+<p>Student Number: <strong>@student.StudentNumber</strong></p>
+
+<h4>My Courses</h4>
+@if (Model.Any())
+{
+    <div class="row">
+        @foreach (var e in Model)
+        {
+            <div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@e.Course.Name</h5>
+                        <p class="card-text">
+                            <strong>Branch:</strong> @e.Course.Branch.Name<br/>
+                            <strong>Dates:</strong> @e.Course.StartDate.ToString("dd/MM/yyyy") — @e.Course.EndDate.ToString("dd/MM/yyyy")<br/>
+                            <strong>Status:</strong>
+                            <span class="badge @(e.Status == "Active" ? "bg-success" : e.Status == "Completed" ? "bg-primary" : "bg-secondary")">
+                                @e.Status
+                            </span>
+                        </p>
+                        <a asp-controller="StudentGrades" asp-action="Course" asp-route-id="@e.CourseId" class="btn btn-outline-primary btn-sm">Grades</a>
+                        <a asp-controller="StudentAttendance" asp-action="Course" asp-route-id="@e.CourseId" class="btn btn-outline-primary btn-sm">Attendance</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-info">You are not enrolled in any courses yet.</div>
+}
+
+<a asp-action="Profile" class="btn btn-secondary mt-3">View My Profile</a>

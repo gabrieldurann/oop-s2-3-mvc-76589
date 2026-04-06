@@ -1,0 +1,42 @@
+@model IEnumerable<VgcCollege.Web.Models.CourseEnrolment>
+@{
+    ViewData["Title"] = "My Attendance";
+}
+
+<h2>My Attendance</h2>
+<p>Select a course to view your attendance:</p>
+
+@if (Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Course</th>
+            <th>Branch</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var e in Model)
+        {
+            <tr>
+                <td>@e.Course.Name</td>
+                <td>@e.Course.Branch.Name</td>
+                <td>
+                    <span class="badge @(e.Status == "Active" ? "bg-success" : e.Status == "Completed" ? "bg-primary" : "bg-secondary")">
+                        @e.Status
+                    </span>
+                </td>
+                <td>
+                    <a asp-action="Course" asp-route-id="@e.CourseId" class="btn btn-sm btn-primary">View Attendance</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">You are not enrolled in any courses yet.</div>
+}

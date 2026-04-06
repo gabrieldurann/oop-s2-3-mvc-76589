@@ -1,0 +1,51 @@
+@using VgcCollege.Web.Models
+@{
+    var course = (Course)ViewBag.Course;
+    var attendanceRecords = (List<AttendanceRecord>)ViewBag.AttendanceRecords;
+    ViewData["Title"] = "Attendance — " + course.Name;
+}
+
+<h2>Attendance — @course.Name</h2>
+<p>Branch: @course.Branch.Name</p>
+
+@if (attendanceRecords.Any())
+{
+    var total = attendanceRecords.Count;
+    var present = attendanceRecords.Count(a => a.Present);
+    <div class="alert alert-info">
+        Attendance rate: <strong>@present / @total (@(total > 0 ? (present * 100 / total) : 0)%)</strong>
+    </div>
+
+    <table class="table table-sm">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var a in attendanceRecords)
+        {
+            <tr>
+                <td>@a.Date.ToString("dd/MM/yyyy")</td>
+                <td>
+                    @if (a.Present)
+                    {
+                        <span class="badge bg-success">Present</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Absent</span>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted">No attendance records yet.</p>
+}
+
+<a asp-action="Index" class="btn btn-secondary">Back to My Attendance</a>

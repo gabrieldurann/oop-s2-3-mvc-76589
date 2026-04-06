@@ -1,0 +1,82 @@
+@using VgcCollege.Web.Models
+@{
+    var course = (Course)ViewBag.Course;
+    var assignmentResults = (List<AssignmentResult>)ViewBag.AssignmentResults;
+    var examResults = (List<ExamResult>)ViewBag.ExamResults;
+    var provisionalCount = (int)ViewBag.ProvisionalCount;
+    ViewData["Title"] = "Grades — " + course.Name;
+}
+
+<h2>Grades — @course.Name</h2>
+<p>Branch: @course.Branch.Name</p>
+
+<h4>Assignment Results</h4>
+@if (assignmentResults.Any())
+{
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>Assignment</th>
+                <th>Score</th>
+                <th>Max Score</th>
+                <th>Feedback</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ar in assignmentResults)
+            {
+                <tr>
+                    <td>@ar.Assignment.Title</td>
+                    <td>@ar.Score</td>
+                    <td>@ar.Assignment.MaxScore</td>
+                    <td>@(ar.Feedback ?? "—")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted">No assignment results yet.</p>
+}
+
+<h4>Exam Results</h4>
+@if (examResults.Any())
+{
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>Exam</th>
+                <th>Date</th>
+                <th>Score</th>
+                <th>Max Score</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var er in examResults)
+            {
+                <tr>
+                    <td>@er.Exam.Title</td>
+                    <td>@er.Exam.Date.ToString("dd/MM/yyyy")</td>
+                    <td>@er.Score</td>
+                    <td>@er.Exam.MaxScore</td>
+                    <td>@(er.Grade ?? "—")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted">No released exam results yet.</p>
+}
+
+@if (provisionalCount > 0)
+{
+    <div class="alert alert-warning">
+        @provisionalCount exam result(s) are still provisional and will be visible once released by the college.
+    </div>
+}
+
+<a asp-action="Index" class="btn btn-secondary">Back to My Grades</a>
