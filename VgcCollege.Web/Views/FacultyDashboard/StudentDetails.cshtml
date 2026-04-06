@@ -1,0 +1,140 @@
+@model VgcCollege.Web.Models.StudentProfile
+@using VgcCollege.Web.Models
+@{
+    var enrolment = (CourseEnrolment)ViewBag.Enrolment;
+    var attendanceRecords = (List<AttendanceRecord>)ViewBag.AttendanceRecords;
+    var assignmentResults = (List<AssignmentResult>)ViewBag.AssignmentResults;
+    var examResults = (List<ExamResult>)ViewBag.ExamResults;
+    ViewData["Title"] = "Student — " + Model.Name;
+}
+
+<h2>@Model.Name</h2>
+<p>Course: <strong>@enrolment.Course.Name</strong></p>
+
+<dl class="row">
+    <dt class="col-sm-3">Student Number</dt>
+    <dd class="col-sm-9">@Model.StudentNumber</dd>
+    <dt class="col-sm-3">Email</dt>
+    <dd class="col-sm-9">@Model.Email</dd>
+    <dt class="col-sm-3">Phone</dt>
+    <dd class="col-sm-9">@Model.Phone</dd>
+    <dt class="col-sm-3">Address</dt>
+    <dd class="col-sm-9">@(Model.Address ?? "—")</dd>
+    <dt class="col-sm-3">Enrolment Status</dt>
+    <dd class="col-sm-9">
+        <span class="badge @(enrolment.Status == "Active" ? "bg-success" : enrolment.Status == "Completed" ? "bg-primary" : "bg-secondary")">
+            @enrolment.Status
+        </span>
+    </dd>
+</dl>
+
+<h4>Attendance</h4>
+@if (attendanceRecords.Any())
+{
+    var total = attendanceRecords.Count;
+    var present = attendanceRecords.Count(a => a.Present);
+    <p>Attendance rate: <strong>@present / @total (@(total > 0 ? (present * 100 / total) : 0)%)</strong></p>
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in attendanceRecords)
+            {
+                <tr>
+                    <td>@a.Date.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        @if (a.Present)
+                        {
+                            <span class="badge bg-success">Present</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Absent</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted">No attendance records yet.</p>
+}
+
+<h4>Assignment Results</h4>
+@if (assignmentResults.Any())
+{
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>Assignment</th>
+                <th>Score</th>
+                <th>Max Score</th>
+                <th>Feedback</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ar in assignmentResults)
+            {
+                <tr>
+                    <td>@ar.Assignment.Title</td>
+                    <td>@ar.Score</td>
+                    <td>@ar.Assignment.MaxScore</td>
+                    <td>@(ar.Feedback ?? "—")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted">No assignment results yet.</p>
+}
+
+<h4>Exam Results</h4>
+@if (examResults.Any())
+{
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>Exam</th>
+                <th>Score</th>
+                <th>Max Score</th>
+                <th>Grade</th>
+                <th>Released</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var er in examResults)
+            {
+                <tr>
+                    <td>@er.Exam.Title</td>
+                    <td>@er.Score</td>
+                    <td>@er.Exam.MaxScore</td>
+                    <td>@(er.Grade ?? "—")</td>
+                    <td>
+                        @if (er.Exam.ResultsReleased)
+                        {
+                            <span class="badge bg-success">Released</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning">Provisional</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted">No exam results yet.</p>
+}
+
+<a asp-action="CourseStudents" asp-route-id="@enrolment.CourseId" class="btn btn-secondary">Back to Students</a>

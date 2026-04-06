@@ -1,0 +1,35 @@
+@model IEnumerable<VgcCollege.Web.Models.Course>
+@{
+    ViewData["Title"] = "Faculty Dashboard";
+}
+
+<h2>Welcome, @ViewBag.FacultyName</h2>
+<p>Here are your assigned courses:</p>
+
+@if (Model.Any())
+{
+    <div class="row">
+        @foreach (var course in Model)
+        {
+            <div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@course.Name</h5>
+                        <p class="card-text">
+                            <strong>Branch:</strong> @course.Branch.Name<br/>
+                            <strong>Students:</strong> @course.Enrolments.Count<br/>
+                            <strong>Dates:</strong> @course.StartDate.ToString("dd/MM/yyyy") — @course.EndDate.ToString("dd/MM/yyyy")
+                        </p>
+                        <a asp-action="CourseStudents" asp-route-id="@course.Id" class="btn btn-primary">View Students</a>
+                        <a asp-controller="FacultyGradebook" asp-action="Course" asp-route-id="@course.Id" class="btn btn-outline-primary">Gradebook</a>
+                        <a asp-controller="FacultyAttendance" asp-action="Course" asp-route-id="@course.Id" class="btn btn-outline-primary">Attendance</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-info">You are not assigned to any courses yet.</div>
+}

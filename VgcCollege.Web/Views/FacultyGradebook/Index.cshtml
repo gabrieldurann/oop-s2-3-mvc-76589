@@ -1,0 +1,36 @@
+@model IEnumerable<VgcCollege.Web.Models.Course>
+@{
+    ViewData["Title"] = "Gradebook";
+}
+
+<h2>Gradebook</h2>
+<p>Select a course to view and manage grades:</p>
+
+@if (Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Course</th>
+            <th>Branch</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var course in Model)
+        {
+            <tr>
+                <td>@course.Name</td>
+                <td>@course.Branch.Name</td>
+                <td>
+                    <a asp-action="Course" asp-route-id="@course.Id" class="btn btn-sm btn-primary">View Gradebook</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">You are not assigned to any courses yet.</div>
+}

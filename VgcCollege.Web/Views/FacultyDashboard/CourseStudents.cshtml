@@ -1,0 +1,49 @@
+@model IEnumerable<VgcCollege.Web.Models.CourseEnrolment>
+@{
+    var course = (VgcCollege.Web.Models.Course)ViewBag.Course;
+    ViewData["Title"] = "Students — " + course.Name;
+}
+
+<h2>Students — @course.Name</h2>
+<p>Branch: @course.Branch.Name</p>
+
+@if (Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Student Number</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var e in Model)
+        {
+            <tr>
+                <td>@e.StudentProfile.Name</td>
+                <td>@e.StudentProfile.StudentNumber</td>
+                <td>@e.StudentProfile.Email</td>
+                <td>@e.StudentProfile.Phone</td>
+                <td>
+                    <span class="badge @(e.Status == "Active" ? "bg-success" : e.Status == "Completed" ? "bg-primary" : "bg-secondary")">
+                        @e.Status
+                    </span>
+                </td>
+                <td>
+                    <a asp-action="StudentDetails" asp-route-id="@e.Id" class="btn btn-sm btn-info">Details</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted">No students enrolled in this course yet.</p>
+}
+
+<a asp-action="Index" class="btn btn-secondary">Back to Dashboard</a>
